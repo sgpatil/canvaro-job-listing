@@ -24,7 +24,10 @@
     "deploy": "gh-pages -d example/build"
   },
   "peerDependencies": {
-    "react": "^16.0.0"
+    "react": "^16.0.0",
+    "react-fade-in": "^0.1.6",
+    "simple-react-modal": "^0.5.1"
+
   },
   "devDependencies": {
     "microbundle-crl": "^0.13.8",
@@ -45,7 +48,10 @@
     "prettier": "^2.0.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "^3.4.1"
+    "react-scripts": "^3.4.1",
+    "react-fade-in": "^0.1.6",
+    "simple-react-modal": "^0.5.1"
+
   },
   "files": [
     "dist"
