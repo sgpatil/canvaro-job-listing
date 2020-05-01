@@ -15,12 +15,14 @@ npm install --save canvaro-job-listing
 ```jsx
 import React, { Component } from 'react'
 
-import MyComponent from 'canvaro-job-listing'
+import JobListing  from 'canvaro-job-listing'
 import 'canvaro-job-listing/dist/index.css'
+
+const AUTH_KEY = "YOUR_AUTH_KEY";
 
 class Example extends Component {
   render() {
-    return <MyComponent />
+    return <JobListing authKey={AUTH_KEY} />
   }
 }
 ```
