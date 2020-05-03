@@ -27,7 +27,6 @@
     "react": "^16.0.0",
     "react-fade-in": "^0.1.6",
     "simple-react-modal": "^0.5.1"
-
   },
   "devDependencies": {
     "microbundle-crl": "^0.13.8",
@@ -51,9 +50,12 @@
     "react-scripts": "^3.4.1",
     "react-fade-in": "^0.1.6",
     "simple-react-modal": "^0.5.1"
-
   },
   "files": [
     "dist"
-  ]
+  ],
+  "dependencies": {
+    "@material-ui/core": "^4.9.12",
+    "axios": "^0.19.2"
+  }
 }

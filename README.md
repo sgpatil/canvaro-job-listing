@@ -26,6 +26,14 @@ class Example extends Component {
   }
 }
 ```
+## Local machine setup
+
+Clone the repo
+
+Step 1: cd into the project and run npm start. This will watch the src/ module and recompile it into dist/ whenever you make changes.
+
+Step 2: Open a 2nd command line, cd into the /example folder and run npm start.
+We now have a live server watching for changes in src or example and reload in real-time so you can easily develop your component.
 
 ## License
 

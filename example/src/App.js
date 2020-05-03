@@ -1,7 +1,8 @@
-import { JobListing } from 'canvaro-job-listing'
+import JobListing from 'canvaro-job-listing'
 import 'canvaro-job-listing/dist/index.css'
 import React, { Component } from "react";
 
+const AUTH_KEY = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjU3OGU4NDA1YjY2ZmU4ZjJmYjg1ZDE4MzUzZjU0MDFmYTc4MjZhNWYzOWRlM2VhZjQxMzczMGU0ODk5ZWFhODRhZjM4MTU2NDdjY2Q1MjNlIn0.eyJhdWQiOiIxIiwianRpIjoiNTc4ZTg0MDViNjZmZThmMmZiODVkMTgzNTNmNTQwMWZhNzgyNmE1ZjM5ZGUzZWFmNDEzNzMwZTQ4OTllYWE4NGFmMzgxNTY0N2NjZDUyM2UiLCJpYXQiOjE1ODEwOTUyOTMsIm5iZiI6MTU4MTA5NTI5MywiZXhwIjoxNjEyNzE3NjkzLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.hoj3d7L_dKrCZ_IZ6oce0z2N40q114eqg5w91qaA6l2nnJZlQY8FGnkRoSKddqQh0KLCPXZkqjgIaDrpoRBy9Pzu1cBE0cDxUck1c7R-zPI7eu8yGwo3jCoTeBw7DuBUS7PQid8wT2dsTflHxcH5u-tcL6EhGiFAHk7fDRGL6We_QznKteM9gGiMy-XL_iqDpKROPWqDNBfB_xM2ZhNHfmrDmg3i-yHtnas7eug_K606iBCl0uY-rajfMiqOl8FKHDK-_DcoDlaaD0vTl-HbBcFmwsStxoBmj2K2Xkpg3gt6kqaaEzsKt6BQCVaa76jirQexGiob-wZXBN0RYdbc0xJN9M7bNHnNXPbYue8yX9czjBmjBUfJkeQV7eP9QmnyMgX5AIVB7ffZGkOUYeZbbd40BhuzRqpKReOMfK1E0gOVyirRBZanihpoGX7WrcGzDRdC2bTuSMLD6D9oiYy2uWKNYoDTRVK9SnSijBgrx3E4yrUzMoZmWf4vMIhB0ksfAsJrZXpPVlT1u8IYwnZiVKlHeZDtVtkMA6Eg7bQMBPQTdEBmEZCuchuJXmC6Kyj0NEdahjsaAb1ga7mMEBQ-yHBALim_uqcg98Dpa71_ipg2gRhd0kV2FXDBMz5780N_h9SUnd3Eaiav82B_hvN4udK0xAzqOMj4TGMQWiH02ts";
 export default class App extends Component {
   constructor(props) {
     super(props);
@@ -21,77 +22,11 @@ export default class App extends Component {
           padding: "70px"
         }}
       >
-        <h2 style={{}}>{"<JobListing />"}</h2>
-        <h5 style={{ color: "gray", marginBottom: "50px", marginTop: 0 }}>
-          npm i react-medium-profile
-        </h5>
-
+        
         <JobListing
-          username={
-            this.state.search.length > 0
-              ? this.state.search
-              : this.state.username
-          }
+          authKey={AUTH_KEY}
         />
-        <h1 style={{ margin: 0, paddingTop: "30px" }}>
-          <span role="img" aria-label="pointing up">
-            👆
-          </span>
-        </h1>
-        <h5
-          style={{
-            textAlign: "center",
-            margin: 0,
-            paddingTop: "5px"
-          }}
-          onClick={() => this.setState({ username: "treyhuffine" })}
-        >
-          Click to fetch Medium profile
-        </h5>
-        <h6 style={{ margin: 0, paddingTop: "10px", color: "gray" }}>or</h6>
-        <input
-          style={{
-            marginTop: "10px",
-            border: "none",
-            marginBottom: this.state.search.length > 0 ? 0 : "40px",
-            padding: "3px",
-            textAlign: "center",
-            borderBottom: "1px solid black"
-          }}
-          type="text"
-          value={this.state.search}
-          onChange={e => this.setState({ search: e.target.value })}
-          placeholder="Find a profile"
-        ></input>
-        {this.state.search.length > 0 && (
-          <h6
-            style={{
-              marginTop: 0,
-              marginBottom: "40px",
-              paddingTop: "5px",
-              color: "gray"
-            }}
-          >
-            Now click the Medium button
-          </h6>
-        )}
-        <div
-          style={{
-            borderTop: "0.2px solid lightgray",
-            borderBottom: "0.2px solid lightgray",
-            width: "100%"
-          }}
-        >
-          <h4>props</h4>
-          <div style={{ marginLeft: "15px" }}>
-            <h4>
-              username: string <span style={{ color: "gray" }}>required</span>
-            </h4>
-            <h4>
-              size: number <span style={{ color: "gray" }}>optional</span>
-            </h4>
-          </div>
-        </div>
+        
       </div>
     );
   }

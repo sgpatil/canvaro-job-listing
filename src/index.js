@@ -1,209 +1,148 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import MediumLogo from "./medium.png";
 import Modal, { closeStyle } from "simple-react-modal";
 import FadeIn from "react-fade-in";
+import SimpleCard from "./SimpleCard"
+import axios from 'axios';
+import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import TextareaAutosize from '@material-ui/core/TextareaAutosize';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
+import Input from '@material-ui/core/Input';
+import Button from '@material-ui/core/Button';
 
 
+// const [feature, setFeature] = useState(initialValues)
+// export class JobListing extends Component {
+const useStyles = makeStyles((theme) => ({
+  root: {
+    '& > *': {
+      margin: theme.spacing(1),
+      width: '25ch',
+    },
+  },
 
-// export const ExampleComponent = ({ text }) => {
-//   return <div className={styles.test}>Example Component: {text}</div>
-// }
+  paper: {
+    padding: theme.spacing(2),
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+  },
+}));
 
+export default function JobListing(props) {
 
-export class JobListing extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loading: true,
-      title: undefined,
-      image: undefined,
-      items: undefined,
-      error: false,
-      show: false
-    };
-    this.open = this.open.bind(this);
+  const [loading, setLoading] = useState(true)
+  const [title, setTitle] = useState(undefined)
+  const [jobId, setJobId] = useState()
+  const [email, setEmail] = useState()
+  const [image, setImage] = useState(undefined)
+  const [items, setItems] = useState(undefined)
+  const [error, setError] = useState(false)
+  const [show, setShow] = useState(false)
+  const [jobsList, setJobsList] = useState()
+  const classes = useStyles();
+
+  const open = () => {
+    setShow(true);
+    setLoading(false);
   }
-  static defaultProps = {
-    username: "dee.aye.en",
-    size: 100
-  };
-  static propTypes = {
-    username: PropTypes.string,
-    size: PropTypes.number
-  };
-  open() {
-    this.setState({ show: true, loading: true });
-    fetch(
-      `https://medium-profile-fetch.herokuapp.com/profile/@${this.props.username}`
-    )
-      .then(result => result.json())
-      .then(data => {
-        if (data.status === "ok") {
-          this.setState({
-            items: data.items,
-            title: data.feed.title,
-            image: data.feed.image,
-            loading: false
-          });
-        } else {
-          this.setState({
-            items: [],
-            image: MediumLogo,
-            error: true,
-            loading: false
-          });
-        }
-      });
+
+  const applyForJob = () => {
+    console.log("apply for job");
+    axios.post(`http://screening.test/api/job/apply`, { email: email, jobId: jobId },
+      { headers: { 'Authorization': "Bearer " + props.authKey } })
+      .then(res => {
+        console.log(res);
+      })
   }
-  render() {
-    return (
-      <div
-        style={{
-          width: `${this.props.size}px`,
-          height: `${this.props.size}px`,
-          cursor: "pointer",
+
+  useEffect(() => {
+    console.log("fffff", props);
+    axios.get(`http://screening.test/api/job-listing`,
+      { headers: { 'Authorization': "Bearer " + props.authKey } })
+      .then(res => {
+        const persons = res.data;
+        setJobsList(res.data);
+        console.log(persons);
+      })
+  }, [])
+
+
+  return (
+    <div>
+      <span onClick={() => {
+        console.log("open modal");
+        open();
+      }}
+      >adasd</span>
+      {jobsList && jobsList.map((job) => {
+        return <SimpleCard key={"job" + job.id} job={job} onClick={(job) => {
+          console.log("open modal", job);
+          setTitle(job.title);
+          setJobId(job.id);
+          open();
+        }} />
+      })}
+
+
+
+      <Modal
+        style={{ backgroundColor: "rgba(0,0,0,0.6)" }}
+        containerStyle={{
+          border: "2px solid black",
+          padding: "15px",
+          width: "70vw",
+          cursor: "auto",
           boxShadow:
             "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"
         }}
+        closeOnOuterClick={true}
+        show={show}
+        onClose={() => setShow(false)}
       >
-        <img
-          onClick={() => this.open()}
-          style={{ width: "100%", height: "100%" }}
-          src={MediumLogo}
-        />
-        <Modal
-          style={{ backgroundColor: "rgba(0,0,0,0.6)" }}
-          containerStyle={{
-            border: "2px solid black",
-            padding: "15px",
-            width: "70vw",
-            cursor: "auto",
-            boxShadow:
-              "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"
-          }}
-          closeOnOuterClick={true}
-          show={this.state.show}
-          onClose={() => this.setState({ show: false })}
+        <a
+          style={{ ...closeStyle, color: "white", backgroundColor: "black" }}
+          onClick={() => setShow(false)}
         >
-          <a
-            style={{ ...closeStyle, color: "white", backgroundColor: "black" }}
-            onClick={() => this.setState({ show: false })}
-          >
-            X
+          X
           </a>
-          {!this.state.loading ? (
+        {!loading ? (
+          <div
+
+          >
+
             <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                flexDirection: "column"
-              }}
+
             >
-              <img
-                src={this.state.image}
-                width="80px"
-                style={{
-                  borderRadius: 40,
-                  marginTop: "5px",
-                  marginBottom: "15px",
-                  boxShadow:
-                    "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"
-                }}
-              />
-              <div
-                style={{
-                  borderBottom: "1px solid lightgray",
-                  marginBottom: "10px",
-                  paddingBottom: "20px",
-                  display: "flex",
-                  alignItems: "center"
-                }}
-              >
-                {!this.state.error ? (
-                  <h5
-                    style={{
-                      margin: 0,
-                      padding: 0,
-                      fontWeight: "lighter"
-                    }}
-                  >
-                    Latest activity by{" "}
-                    <a
-                      style={{ fontWeight: "bolder", color: "black" }}
-                      href={`https://medium.com/@${this.props.username}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {this.state.items.length > 0
-                        ? this.state.items[0].author
-                        : this.props.username}
-                    </a>{" "}
-                    on
-                  </h5>
-                ) : (
-                  <h5
-                    style={{
-                      margin: 0,
-                      padding: 0,
-                      fontWeight: "lighter"
-                    }}
-                  >
-                    User not found
-                  </h5>
-                )}
-                <img
-                  style={{ marginLeft: "5px" }}
-                  src={MediumLogo}
-                  width="20px"
-                />
-              </div>
-              <FadeIn>
-                {this.state.items.map((item, index) => (
-                  <div
-                    key={index}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      padding: "10px"
-                      //width: "90%"
-                    }}
-                  >
-                    <img
-                      style={{
-                        //border: "1px solid black",
-                        marginRight: "20px",
-                        boxShadow:
-                          "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"
-                      }}
-                      src={
-                        item.content[2] !== "p" ? item.thumbnail : MediumLogo
-                      }
-                      width="80px"
-                    />
-                    <div
-                      style={{
-                        margin: 0,
-                        padding: 0,
-                        color: "gray",
-                        fontWeight: "lighter"
-                      }}
-                    >
-                      <a
-                        style={{ color: "gray" }}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        href={item.link}
-                      >
-                        {item.title}
-                      </a>
-                    </div>
-                  </div>
-                ))}
-              </FadeIn>
+              Form
             </div>
-          ) : (
+            <FadeIn>
+              {title}
+              <form className={classes.root} noValidate autoComplete="off">
+                <Grid container spacing={3}>
+                  <Grid item xs={12}>
+                    <TextField id="standard-basic" label="Email" onChange={(event) => { setEmail(event.target.value) }} />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextareaAutosize
+                      rowsMax={10}
+                      rowsMin={10}
+                      colsMax={10}
+                      aria-label="maximum height"
+                      placeholder="Tell us something about your self"
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Input type="file" id="standard-basic" label="Email" />
+                  </Grid>
+                  <Button variant="contained" color="primary" onClick={() => { applyForJob() }}>Apply</Button>
+                </Grid>
+              </form>
+            </FadeIn>
+          </div>
+        ) : (
             <div>
               <FadeIn>
                 <h3
@@ -215,13 +154,13 @@ export class JobListing extends Component {
                     margin: "100px"
                   }}
                 >
-                  Fetching {this.props.username.toUpperCase()}...
+                  Loading...
                 </h3>
               </FadeIn>
             </div>
           )}
-        </Modal>
-      </div>
-    );
-  }
+      </Modal>
+    </div>
+  );
+
 }
